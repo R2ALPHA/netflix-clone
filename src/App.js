@@ -5,6 +5,10 @@ import Banner from './Banner';
 import Nav from './Nav';
 import { useState } from 'react';
 import movieTrailer from 'movie-trailer';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const MOVIES_ROW = [
   {
@@ -70,13 +74,22 @@ function App() {
       setCurrentRow(key);
       setSelectedMovieId(key);
     } else {
-      movieTrailer(movie?.title || movie?.name || movie?.original_name || "")
+
+      const movieTitle = movie?.title || movie?.name || movie?.original_name || "";
+      movieTrailer(movieTitle)
         .then(url => {
           const urlParams = new URLSearchParams(new URL(url).search);
           setTrailerUrl(urlParams.get('v'));
           setCurrentRow(key);
           setSelectedMovieId(movie.id);
-        }).catch(error => console.log(error));
+        }).catch(error => {
+          MySwal.fire({
+            icon: 'error',
+            title: 'Please try different movie',
+            text: `No trailer found for the movie ${movieTitle}`,
+            footer: '<a href="https://www.themoviedb.org/">Why do I have this issue?</a>'
+          })
+        });
     }
   }
 
