@@ -17,7 +17,6 @@ const base_url = "https://image.tmdb.org/t/p/original";
 function Row({ id, title, fetchUrl, isLargeRow, handleTrailer, trailerUrl, currentRow }) {
 
     const [movies, setMovies] = useState([]);
-    console.log("the current row is", currentRow);
 
     useEffect(() => {
 

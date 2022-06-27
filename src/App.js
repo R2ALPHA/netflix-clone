@@ -65,10 +65,10 @@ function App() {
 
   const trailerUrlHandler = (movie, key) => {
 
-    if (movie.id === selectedMovieId) {
+    if (key === -1 || movie.id === selectedMovieId) {
       setTrailerUrl('');
       setCurrentRow(key);
-      setSelectedMovieId(movie.id);
+      setSelectedMovieId(key);
     } else {
       movieTrailer(movie?.title || movie?.name || movie?.original_name || "")
         .then(url => {
@@ -83,7 +83,12 @@ function App() {
   return (
     <div className='app'>
       <Nav />
-      <Banner />
+      <Banner
+        id={0}
+        trailerUrl={trailerUrl}
+        handleTrailer={trailerUrlHandler}
+        currentRow={currentRow}
+      />
       {
         MOVIES_ROW.map(row =>
           <Row
